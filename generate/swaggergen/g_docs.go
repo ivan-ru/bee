@@ -148,10 +148,13 @@ func parsePackageFromDir(path string) error {
 }
 
 // GenerateDocs generates documentations for a given path.
-func GenerateDocs(curpath string) {
+func GenerateDocs(curpath string, protocol string) {
 	fset := token.NewFileSet()
-
-	f, err := parser.ParseFile(fset, filepath.Join(curpath, "routers", "router.go"), nil, parser.ParseComments)
+	protocolPath := "/" + protocol
+	if protocol == "" {
+		protocolPath = protocol
+	}
+	f, err := parser.ParseFile(fset, filepath.Join(curpath, "routers"+protocolPath, "router.go"), nil, parser.ParseComments)
 	if err != nil {
 		beeLogger.Log.Fatalf("Error while parsing router.go: %s", err)
 	}
