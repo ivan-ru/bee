@@ -94,12 +94,12 @@ func GenerateCode(cmd *commands.Command, args []string) int {
 	switch gcmd {
 	case "scaffold":
 		scaffold(cmd, args, currpath)
-	case "docs_http":
-		swaggergen.GenerateDocs(currpath, "http")
-	case "docs_grpc":
-		swaggergen.GenerateDocs(currpath, "grpc")
+	// case "docs_http":
+	// 	swaggergen.GenerateDocs(currpath, "http")
+	// case "docs_grpc":
+	// 	swaggergen.GenerateDocs(currpath, "grpc")
 	case "docs":
-		swaggergen.GenerateDocs(currpath, "")
+		swaggergen.GenerateDocs(currpath)
 	case "appcode":
 		appCode(cmd, args, currpath)
 	case "migration":
