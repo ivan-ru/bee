@@ -679,18 +679,27 @@ func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 				rs := swagger.Response{}
 				st := strings.TrimSpace(t[len("@Failure"):])
 				var cd []rune
-				var start bool
-				for i, s := range st {
-					if unicode.IsSpace(s) {
-						if start {
-							rs.Description = strings.TrimSpace(st[i+1:])
-							break
-						} else {
-							continue
-						}
-					}
-					start = true
-					cd = append(cd, s)
+				// var start bool
+				// for i, s := range st {
+				// 	if unicode.IsSpace(s) {
+				// 		if start {
+				// 			rs.Description = strings.TrimSpace(st[i+1:])
+				// 			break
+				// 		} else {
+				// 			continue
+				// 		}
+				// 	}
+				// 	start = true
+				// 	cd = append(cd, s)
+				// }
+
+				cmnts := strings.Split(st, "|")
+				respDesc := strings.TrimSpace(cmnts[0])
+				objName := strings.TrimSpace(cmnts[1])
+				rs.Description = strings.TrimSpace(respDesc)
+				m, _, _ := getModel(objName)
+				rs.Schema = &swagger.Schema{
+					Ref: "#/definitions/" + m,
 				}
 				opts.Responses[string(cd)] = rs
 			} else if strings.HasPrefix(t, "@Deprecated") {
