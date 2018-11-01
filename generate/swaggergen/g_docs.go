@@ -32,12 +32,11 @@ import (
 	"strings"
 	"unicode"
 
-	"gopkg.in/yaml.v2"
-
 	"github.com/astaxie/beego/swagger"
 	"github.com/astaxie/beego/utils"
 	beeLogger "github.com/beego/bee/logger"
 	bu "github.com/beego/bee/utils"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -665,8 +664,9 @@ func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 				case 5:
 					para.Required, _ = strconv.ParseBool(p[3])
 					para.Description = strings.Replace(strings.Trim(p[4], `" `), "'", "\"", -1)
-					para.Description = strings.Replace(para.Description, `\n`, `
+					para.Description = strings.Replace(para.Description, `\r\n`, `
 `, -1)
+					para.Description = strings.Replace(para.Description, `\"`, `"`, -1)
 				case 6:
 					para.Default = str2RealType(p[3], para.Type)
 					para.Required, _ = strconv.ParseBool(p[4])
