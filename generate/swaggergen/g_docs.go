@@ -667,6 +667,7 @@ func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 					para.Description = strings.Replace(para.Description, `\r\n`, `
 `, -1)
 					para.Description = strings.Replace(para.Description, `\"`, `"`, -1)
+					fmt.Println(para.Description)
 				case 6:
 					para.Default = str2RealType(p[3], para.Type)
 					para.Required, _ = strconv.ParseBool(p[4])
@@ -885,7 +886,7 @@ func getparams(str string) []string {
 	var start bool
 	var r []string
 	var quoted int8
-	for _, c := range str {
+	for i, c := range str {
 		if unicode.IsSpace(c) && quoted == 0 {
 			if !start {
 				continue
@@ -899,9 +900,11 @@ func getparams(str string) []string {
 		}
 
 		start = true
-		if c == '"' {
-			quoted ^= 1
-			continue
+		if c == '"' && i >= 1 {
+			if string(str[i-1]) != `\` {
+				quoted ^= 1
+				continue
+			}
 		}
 		s = append(s, c)
 	}
