@@ -664,6 +664,7 @@ func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 				case 5:
 					para.Required, _ = strconv.ParseBool(p[3])
 					para.Description = strings.Replace(strings.Trim(p[4], `" `), "'", "\"", -1)
+					para.Description = strings.Replace(para.Description, `\t`, `  `, -1)
 					para.Description = strings.Replace(para.Description, `\r\n`, `
 `, -1)
 					para.Description = strings.Replace(para.Description, `\"`, `"`, -1)
